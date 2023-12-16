@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des Télévisions</title>
+    <style>
+        html, body {
+    height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #2C3E50;
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+            border-bottom: 3px solid #2980B9;
+        }
+
+        main {
+            flex: 1 0 auto;
+            margin: 20px auto;
+            width: 100%;
+            max-width: none;
+        }
+
+        section {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            margin-left: auto; /* Centre la section horizontalement */
+            margin-right: auto; /* Centre la section horizontalement */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            width: auto; /* Permet à la section de s'adapter au contenu */
+            max-width: 800px; /* Largeur maximale de la section */
+        }
+
+        h2 {
+            border-bottom: 2px solid #2980B9;
+            padding-bottom: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding: 5px 0;
+        }
+
+        footer {
+            background-color: #2C3E50;
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+            flex-shrink: 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #2980B9;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2C3E50;
+        }
+
+        .televisions-list {
+            margin-bottom: 20px;
+        }
+
+        .televisions-list li {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 5px;
+            list-style-type: none;
+        }
+
+        .televisions-list form {
+            display: inline;
+            margin-left: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #2980B9;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2C3E50;
+        }
+
+        .televisions-list {
+            margin-bottom: 20px;
+        }
+
+        .televisions-list li {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 5px;
+            list-style-type: none;
+        }
+
+        .televisions-list form {
+            display: inline;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="branding">
+            <h1><span class="highlight">Gestion</span> des Télévisions</h1>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Formulaire pour ajouter une nouvelle télévision -->
+            <section>
+                <h2>Ajouter une Nouvelle Télévision</h2>
+                <form action="/add-tv" method="POST">
+                    <div class="form-group">
+                        <label for="marque">Marque:</label>
+                        <input type="text" id="marque" name="marque" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modele">Modèle:</label>
+                        <input type="text" id="modele" name="modele" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prix">Prix:</label>
+                        <input type="number" id="prix" name="prix" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="statut">Statut:</label>
+                        <select id="statut" name="statut">
+                            <option value="souhaitée">Souhaitée</option>
+                            <option value="achetée">Achetée</option>
+                            <option value="cassée">Cassée</option>
+                        </select>
+                    </div>
+
+                    <button type="submit">Ajouter</button>
+                </form>
+            </section>
+
+    
+            <!-- Section pour les télévisions souhaitées -->
+            <section class="televisions-list">
+                <h2>Télévisions Souhaitées</h2>
+                <ul>
+                    <% televisionsSouhaitees.forEach(tv => { %>
+                        <li>
+                            <%= tv.marque %> - <%= tv.modele %> - <%= tv.prix %> €
+                            <!-- Formulaire pour changer le statut à 'achetée' -->
+                            <form action="/update-status/<%= tv.id %>" method="POST">
+                                <input type="hidden" name="newStatus" value="achetée">
+                                <button type="submit">Marquer comme Achetée</button>
+                            </form>
+                            <!-- Formulaire de suppression -->
+                            <form action="/delete-tv/<%= tv.id %>" method="POST">
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        </li>
+                    <% }); %>
+                </ul>
+            </section>
+    
+            <!-- Section pour les télévisions achetées -->
+            <section class="televisions-list">
+                <h2>Télévisions Achetées</h2>
+                <ul>
+                    <% televisionsAchetees.forEach(tv => { %>
+                        <li>
+                            <%= tv.marque %> - <%= tv.modele %> - <%= tv.prix %> €
+                            <!-- Formulaire pour changer le statut à 'cassée' -->
+                            <form action="/update-status/<%= tv.id %>" method="POST">
+                                <input type="hidden" name="newStatus" value="cassée">
+                                <input type="text" name="cause" placeholder="Cause de la casse">
+                                <button type="submit">Marquer comme Cassée</button>
+                            </form>
+
+                            <!-- Formulaire de suppression -->
+                            <form action="/delete-tv/<%= tv.id %>" method="POST">
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        </li>
+                    <% }); %>
+                </ul>
+            </section>
+    
+            <!-- Section pour les télévisions cassées -->
+            <section class="televisions-list">
+                <h2>Télévisions Cassées</h2>
+                <ul>
+                    <% televisionsCassees.forEach(tv => { %>
+                        <li>
+                            <%= tv.marque %> - <%= tv.modele %> - <%= tv.prix %> €
+                            <% if (tv.cause) { %>
+                                <p>Cassée à cause de : <%= tv.cause %></p>
+                            <% } %>
+                            <!-- Formulaire de suppression -->
+                            <form action="/delete-tv/<%= tv.id %>" method="POST">
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        </li>
+                    <% }); %>
+                </ul>
+            </section>
+        </div>
+    </main>
+    </body>
+    </html>
+    
