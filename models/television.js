@@ -40,6 +40,15 @@ class Television {
             [id]
         );
     }
+
+
+    static getTotalPriceByStatus(status) {
+        return db.execute(
+            'SELECT SUM(prix) AS totalPrice FROM televisions WHERE statut = ?',
+            [status]
+        );
+    }
+    
 }
 
 module.exports = Television;

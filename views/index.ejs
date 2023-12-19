@@ -223,10 +223,13 @@
                             <!-- Formulaire de suppression -->
                             <form action="/delete-tv/<%= tv.id %>" method="POST">
                                 <button type="submit">Supprimer</button>
+                                
                             </form>
                         </li>
                     <% }); %>
+                
                 </ul>
+                <p>Prix total : <%= totalSouhaitees %> €</p>
             </section>
     
             <!-- Section pour les télévisions achetées -->
@@ -250,6 +253,8 @@
                         </li>
                     <% }); %>
                 </ul>
+                <p>Prix total : <%= totalAchetees %></p>
+
             </section>
     
             <!-- Section pour les télévisions cassées -->
@@ -269,6 +274,7 @@
                         </li>
                     <% }); %>
                 </ul>
+                <p>Prix total : <%= totalCassees %></p>
             </section>
         </div>
     </main>

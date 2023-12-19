@@ -8,16 +8,25 @@ exports.getIndex = async (req, res, next) => {
         const televisionsAchetees = allTelevisions.filter(tv => tv.statut === 'achetée');
         const televisionsCassees = allTelevisions.filter(tv => tv.statut === 'cassée');
 
+        // Calculer les prix totaux
+        const [totalSouhaitees] = await Television.getTotalPriceByStatus('souhaitée');
+        const [totalAchetees] = await Television.getTotalPriceByStatus('achetée');
+        const [totalCassees] = await Television.getTotalPriceByStatus('cassée');
+
         res.render('index', { 
             televisionsSouhaitees: televisionsSouhaitees,
             televisionsAchetees: televisionsAchetees,
-            televisionsCassees: televisionsCassees
+            televisionsCassees: televisionsCassees,
+            totalSouhaitees: totalSouhaitees[0].totalPrice,
+            totalAchetees: totalAchetees[0].totalPrice,
+            totalCassees: totalCassees[0].totalPrice
         });
     } catch (err) {
         console.error(err);
         res.send("Erreur lors de la récupération des télévisions.");
     }
 };
+
 
 
 exports.postAddTv = async (req, res, next) => {

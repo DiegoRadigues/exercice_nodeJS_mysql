@@ -3,8 +3,9 @@ const mysql = require('mysql2');
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'motdepasse123',
+    password: 'mdp',
     database: 'TelevisionDB',
+    port: 3307,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
